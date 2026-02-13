@@ -1,36 +1,48 @@
 import { Suspense } from "react";
-import { PageShell } from "@/components/PageShell";
-
-export const dynamic = "force-dynamic";
-import { EmailForm } from "@/components/EmailForm";
+import { GraveyardHero } from "@/components/GraveyardHero";
 import { DashboardContent } from "@/components/DashboardContent";
 import { DashboardSkeleton } from "@/components/skeletons";
+import { EmailForm } from "@/components/EmailForm";
 import { Footer } from "@/components/Footer";
 import { Separator } from "@/components/ui/separator";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
-    <PageShell>
-      {/* Header */}
-      <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Crypto Losers</h1>
-          <p className="text-sm text-muted-foreground">
-            Binance Spot · 24h worst performers
-          </p>
-        </div>
-        <EmailForm />
-      </header>
+    <main>
+      {/* Hero */}
+      <div className="mx-auto max-w-6xl px-4 md:px-6">
+        <GraveyardHero />
+      </div>
 
-      <Separator className="mb-6" />
+      {/* Email capture */}
+      <div className="mx-auto max-w-6xl px-4 md:px-6">
+        <section id="email" className="scroll-mt-8">
+          <Separator className="mb-6" />
+          <div className="flex flex-col items-center gap-4 py-8">
+            <h2 className="font-display text-2xl md:text-3xl uppercase tracking-tight text-center">
+              Get This List In Your Inbox
+            </h2>
+            <p className="text-sm text-muted-foreground text-center max-w-md">
+              Enter your email to receive the current losers snapshot. One-time
+              send, no subscriptions.
+            </p>
+            <EmailForm />
+          </div>
+          <Separator />
+        </section>
+      </div>
 
-      {/* Data: KPIs + Table — with streaming skeleton */}
+      {/* Data: stat strip + controls + results — streamed with skeleton */}
       <Suspense fallback={<DashboardSkeleton />}>
         <DashboardContent />
       </Suspense>
 
       {/* Footer */}
-      <Footer />
-    </PageShell>
+      <div className="mx-auto max-w-6xl px-4 md:px-6">
+        <Footer />
+      </div>
+    </main>
   );
 }

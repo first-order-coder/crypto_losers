@@ -5,9 +5,6 @@ import Image from "next/image";
 export const dynamic = "force-dynamic";
 import { PageShell } from "@/components/PageShell";
 import { KpiCard } from "@/components/KpiCard";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent } from "@/components/ui/card";
 import { AssetTabs } from "./AssetTabs";
 import { formatPrice, formatPct, formatCompact } from "@/lib/number";
 
@@ -67,53 +64,62 @@ export default async function AssetPage({ params }: PageProps) {
   const { binance, background, mappingConfidence } = data;
   const isNegative = binance.changePct24h < 0;
 
-  // Confidence badge colors
-  const confidenceColor: Record<string, string> = {
+  // Confidence badge ink styles
+  const confidenceStyles: Record<string, string> = {
     high: "bg-emerald-100 text-emerald-800",
     medium: "bg-amber-100 text-amber-800",
     low: "bg-zinc-100 text-zinc-600",
   };
+
+  // Updated-at time
+  const now = new Date();
+  const time = now.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "UTC",
+  });
 
   return (
     <PageShell>
       {/* Back link */}
       <Link
         href="/"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        className="mb-4 inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
         <span aria-hidden>←</span> Back to dashboard
       </Link>
 
       {/* Header */}
-      <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <header className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           {background?.imageUrl && (
             <Image
               src={background.imageUrl}
               alt={background.name}
-              width={40}
-              height={40}
-              className="rounded-full"
+              width={44}
+              height={44}
+              className="rounded-full ink-border-2"
               unoptimized
             />
           )}
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold tracking-tight">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="font-display text-3xl md:text-4xl uppercase tracking-tight">
                 {data.symbol}
               </h1>
               {background && (
-                <span className="text-lg text-muted-foreground">
+                <span className="text-base text-muted-foreground">
                   {background.name}
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <span className="tabular-nums text-xl font-semibold">
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="tabular-nums text-xl font-bold">
                 ${formatPrice(binance.lastPrice)}
               </span>
               <span
-                className={`tabular-nums text-sm font-medium ${
+                className={`tabular-nums text-sm font-semibold ${
                   isNegative ? "text-red-600" : "text-emerald-600"
                 }`}
               >
@@ -123,15 +129,32 @@ export default async function AssetPage({ params }: PageProps) {
           </div>
         </div>
 
-        <Badge
-          variant="outline"
-          className={`${confidenceColor[mappingConfidence]} border-0 text-xs`}
+        {/* Confidence badge — ink-styled pill */}
+        <span
+          className={`ink-border rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider ${confidenceStyles[mappingConfidence]}`}
         >
           Mapping: {mappingConfidence}
-        </Badge>
+        </span>
       </header>
 
-      <Separator className="mb-6" />
+      {/* Yellow stat strip */}
+      <div className="ink-border-2 bg-yellow-300 py-2 px-4 mb-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-xs font-bold uppercase tracking-wider text-black rounded-md">
+        <span
+          className={`tabular-nums ${isNegative ? "text-red-800" : "text-emerald-800"}`}
+        >
+          {formatPct(binance.changePct24h)} 24h
+        </span>
+        <span className="text-yellow-700/60" aria-hidden>
+          /
+        </span>
+        <span className="tabular-nums">
+          ${formatCompact(binance.quoteVolume24h)} Volume
+        </span>
+        <span className="text-yellow-700/60" aria-hidden>
+          /
+        </span>
+        <span className="tabular-nums">Updated {time} UTC</span>
+      </div>
 
       {/* Stats Grid */}
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -151,7 +174,6 @@ export default async function AssetPage({ params }: PageProps) {
         <KpiCard
           label="24h Change"
           value={formatPct(binance.changePct24h)}
-          className={isNegative ? "border-red-200" : "border-emerald-200"}
         />
       </div>
 
@@ -159,12 +181,12 @@ export default async function AssetPage({ params }: PageProps) {
       <AssetTabs binance={binance} background={background} />
 
       {/* Footer disclaimer */}
-      <Card className="mt-6 py-3">
-        <CardContent className="text-xs text-muted-foreground">
+      <div className="mt-6 ink-border-2 ink-shadow rounded-md bg-white py-3 px-6">
+        <p className="text-xs text-muted-foreground">
           Market data from Binance. Background info from CoinGecko.
           Mapping confidence is determined heuristically — verify independently.
-        </CardContent>
-      </Card>
+        </p>
+      </div>
     </PageShell>
   );
 }

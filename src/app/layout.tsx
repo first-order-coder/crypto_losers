@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { bodyFont, displayFont } from "@/lib/fonts";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Crypto Losers",
@@ -20,10 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${inter.variable} font-sans bg-zinc-50 text-foreground antialiased`}
-      >
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable}`}>
+      <body className="font-sans bg-white text-foreground antialiased">
         <TooltipProvider delayDuration={200}>
           {children}
         </TooltipProvider>

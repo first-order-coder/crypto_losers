@@ -39,11 +39,15 @@ export interface Loser {
 }
 
 /**
- * Compute the top losers from Binance 24h ticker data.
- * Shared between /api/losers and /api/email-losers.
+ * Return ALL filtered + sorted losers without any limit.
+ * Used by /api/losers for cursor-based paging.
  */
-export async function computeLosers(params: LosersParams): Promise<Loser[]> {
-  const { quote, limit, minQuoteVolume, excludeLeveraged } = params;
+export async function computeAllFilteredLosers(params: {
+  quote: string;
+  minQuoteVolume: number;
+  excludeLeveraged: boolean;
+}): Promise<Loser[]> {
+  const { quote, minQuoteVolume, excludeLeveraged } = params;
   const tickers = await fetch24hTickers();
 
   return tickers
@@ -58,7 +62,6 @@ export async function computeLosers(params: LosersParams): Promise<Loser[]> {
       (a, b) =>
         Number(a.priceChangePercent) - Number(b.priceChangePercent)
     )
-    .slice(0, limit)
     .map((t) => ({
       symbol: t.symbol,
       lastPrice: Number(t.lastPrice),
@@ -67,4 +70,13 @@ export async function computeLosers(params: LosersParams): Promise<Loser[]> {
       highPrice24h: Number(t.highPrice),
       lowPrice24h: Number(t.lowPrice),
     }));
+}
+
+/**
+ * Compute the top losers from Binance 24h ticker data.
+ * Shared between server components and /api/email-losers.
+ */
+export async function computeLosers(params: LosersParams): Promise<Loser[]> {
+  const all = await computeAllFilteredLosers(params);
+  return all.slice(0, params.limit);
 }

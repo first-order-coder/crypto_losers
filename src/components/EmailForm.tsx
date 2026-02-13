@@ -51,9 +51,9 @@ export function EmailForm() {
         onChange={(e) => setEmail(e.target.value)}
         required
         disabled={loading}
-        className="max-w-xs"
+        className="max-w-xs ink-border rounded-lg"
       />
-      <Button type="submit" disabled={loading} size="sm">
+      <Button type="submit" disabled={loading} size="sm" className="btn-ink">
         {loading ? "Sending…" : "Email me the losers"}
       </Button>
     </form>

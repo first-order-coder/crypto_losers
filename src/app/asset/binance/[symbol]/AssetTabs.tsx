@@ -1,7 +1,6 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SectionCard } from "@/components/SectionCard";
+import { useState } from "react";
 import { formatPrice, formatPct, formatCompact } from "@/lib/number";
 
 interface BinanceStats {
@@ -26,17 +25,41 @@ interface AssetTabsProps {
   background: Background | null;
 }
 
-export function AssetTabs({ binance, background }: AssetTabsProps) {
-  return (
-    <Tabs defaultValue="overview">
-      <TabsList>
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="market">Market</TabsTrigger>
-      </TabsList>
+type TabId = "overview" | "market";
 
-      {/* Overview Tab */}
-      <TabsContent value="overview">
-        <SectionCard title="About">
+const TABS: { id: TabId; label: string }[] = [
+  { id: "overview", label: "Overview" },
+  { id: "market", label: "Market" },
+];
+
+export function AssetTabs({ binance, background }: AssetTabsProps) {
+  const [activeTab, setActiveTab] = useState<TabId>("overview");
+
+  return (
+    <div>
+      {/* Tab triggers — ink pill buttons */}
+      <div className="flex gap-2 mb-4">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`ink-border rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
+              activeTab === tab.id
+                ? "bg-black text-white"
+                : "bg-white text-black hover:bg-zinc-100"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Overview panel */}
+      {activeTab === "overview" && (
+        <div className="ink-border-2 ink-shadow rounded-md bg-white p-6">
+          <h3 className="font-display text-lg uppercase tracking-tight mb-4">
+            About
+          </h3>
           {background ? (
             <div className="flex flex-col gap-4">
               {/* Description */}
@@ -60,7 +83,7 @@ export function AssetTabs({ binance, background }: AssetTabsProps) {
                     href={background.homepage}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-primary hover:underline"
+                    className="btn-ink inline-flex items-center gap-1 rounded-md bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wider hover:bg-zinc-50"
                   >
                     <span aria-hidden>🌐</span> Website
                   </a>
@@ -70,7 +93,7 @@ export function AssetTabs({ binance, background }: AssetTabsProps) {
                     href={background.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-primary hover:underline"
+                    className="btn-ink inline-flex items-center gap-1 rounded-md bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wider hover:bg-zinc-50"
                   >
                     <span aria-hidden>𝕏</span> Twitter
                   </a>
@@ -82,26 +105,45 @@ export function AssetTabs({ binance, background }: AssetTabsProps) {
               No background information found for this asset.
             </p>
           )}
-        </SectionCard>
-      </TabsContent>
+        </div>
+      )}
 
-      {/* Market Tab */}
-      <TabsContent value="market">
-        <SectionCard title="Market Stats">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <StatRow label="Last Price" value={`$${formatPrice(binance.lastPrice)}`} />
-            <StatRow label="24h Change" value={formatPct(binance.changePct24h)} negative={binance.changePct24h < 0} />
-            <StatRow label="24h High" value={`$${formatPrice(binance.highPrice24h)}`} />
-            <StatRow label="24h Low" value={`$${formatPrice(binance.lowPrice24h)}`} />
-            <StatRow label="24h Volume" value={`$${formatCompact(binance.quoteVolume24h)}`} />
+      {/* Market panel */}
+      {activeTab === "market" && (
+        <div className="ink-border-2 ink-shadow rounded-md bg-white p-6">
+          <h3 className="font-display text-lg uppercase tracking-tight mb-4">
+            Market Stats
+          </h3>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <StatRow
+              label="Last Price"
+              value={`$${formatPrice(binance.lastPrice)}`}
+            />
+            <StatRow
+              label="24h Change"
+              value={formatPct(binance.changePct24h)}
+              negative={binance.changePct24h < 0}
+            />
+            <StatRow
+              label="24h High"
+              value={`$${formatPrice(binance.highPrice24h)}`}
+            />
+            <StatRow
+              label="24h Low"
+              value={`$${formatPrice(binance.lowPrice24h)}`}
+            />
+            <StatRow
+              label="24h Volume"
+              value={`$${formatCompact(binance.quoteVolume24h)}`}
+            />
             <StatRow
               label="24h Range"
               value={`$${formatPrice(binance.lowPrice24h)} – $${formatPrice(binance.highPrice24h)}`}
             />
           </div>
-        </SectionCard>
-      </TabsContent>
-    </Tabs>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -115,15 +157,17 @@ function StatRow({
   negative?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-lg border px-4 py-3">
-      <span className="text-sm text-muted-foreground">{label}</span>
+    <div className="flex items-center justify-between ink-border rounded-md px-4 py-3">
+      <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </span>
       <span
-        className={`tabular-nums text-sm font-semibold ${
+        className={`tabular-nums text-sm font-bold ${
           negative === true
             ? "text-red-600"
             : negative === false
-            ? "text-emerald-600"
-            : ""
+              ? "text-emerald-600"
+              : ""
         }`}
       >
         {value}

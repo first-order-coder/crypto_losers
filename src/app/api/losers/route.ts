@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { computeLosers } from "@/lib/losers";
+import { computeAllFilteredLosers } from "@/lib/losers";
 
 // ── Query-param schema (coerces strings from URL search params) ─────
 const QuerySchema = z.object({
@@ -8,11 +8,16 @@ const QuerySchema = z.object({
     .string()
     .toUpperCase()
     .default("USDT"),
-  limit: z.coerce
+  cursor: z.coerce
+    .number()
+    .int()
+    .min(0)
+    .default(0),
+  pageSize: z.coerce
     .number()
     .int()
     .min(1)
-    .max(200)
+    .max(100)
     .default(50),
   minQuoteVolume: z.coerce
     .number()
@@ -37,14 +42,23 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const losers = await computeLosers(parsed.data);
+    const { cursor, pageSize, ...filterParams } = parsed.data;
+    const all = await computeAllFilteredLosers(filterParams);
+
+    const slice = all.slice(cursor, cursor + pageSize);
+    const nextCursor =
+      cursor + pageSize < all.length ? cursor + pageSize : null;
 
     return NextResponse.json({
       updatedAt: new Date().toISOString(),
       exchange: "binance",
       quote: parsed.data.quote,
-      limit: parsed.data.limit,
-      losers,
+      cursor,
+      pageSize,
+      total: all.length,
+      nextCursor,
+      hasMore: nextCursor !== null,
+      losers: slice,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
