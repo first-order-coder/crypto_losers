@@ -21,7 +21,10 @@ export function YellowStatStrip({
   });
 
   return (
-    <div className="ink-border-2 bg-yellow-300 py-3 px-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-bold uppercase tracking-wider text-black">
+    <div
+      className="ink-border-2 bg-accent-yellow py-3 px-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-bold uppercase tracking-wider"
+      style={{ color: "var(--accent-yellow-text, #000000)" }}
+    >
       <span className="tabular-nums">{loserCount} Losers</span>
       <span className="text-yellow-700/60" aria-hidden>
         /

@@ -31,7 +31,7 @@ interface LosersTableProps {
 
 export function LosersTable({ losers }: LosersTableProps) {
   return (
-    <div className="ink-border-2 rounded-sm bg-white overflow-hidden">
+    <div className="ink-border-2 rounded-sm bg-card overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow>

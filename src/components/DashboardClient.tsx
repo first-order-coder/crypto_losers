@@ -194,7 +194,7 @@ export function DashboardClient({
         <section id="results" className="scroll-mt-24">
           {loading ? (
             <div className="flex items-center justify-center py-20">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-black border-t-transparent" />
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-ink border-t-transparent" />
               <span className="ml-3 text-sm text-muted-foreground">
                 Loading…
               </span>
@@ -215,7 +215,7 @@ export function DashboardClient({
                 >
                   {loadingMore ? (
                     <>
-                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                              <div className="h-5 w-5 animate-spin rounded-full border-2 border-ink border-t-transparent" />
                       <span className="ml-2 text-xs text-muted-foreground uppercase tracking-wider">
                         Loading more…
                       </span>

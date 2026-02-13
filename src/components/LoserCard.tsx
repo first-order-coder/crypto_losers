@@ -25,7 +25,7 @@ export function LoserCard({
   const isNegative = changePct24h < 0;
 
   return (
-    <div className="ink-border-2 ink-shadow rounded-sm bg-white flex flex-col">
+    <div className="ink-card rounded-sm flex flex-col cursor-pointer">
       {/* Header row: rank + symbol + change % */}
       <div className="flex items-baseline justify-between px-3 pt-3 pb-1">
         <div className="flex items-baseline gap-1.5">
@@ -53,7 +53,7 @@ export function LoserCard({
       </div>
 
       {/* Divider */}
-      <div className="border-t border-[#111]" />
+      <div className="border-t border-ink" />
 
       {/* Stats rows */}
       <div className="px-3 py-2 space-y-0.5 text-[11px]">
@@ -91,7 +91,7 @@ export function LoserCard({
       {/* View link */}
       <Link
         href={`/asset/binance/${symbol}`}
-        className="block border-t-2 border-[#111] py-1.5 text-center text-[11px] font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors"
+        className="block border-t-2 border-ink py-1.5 text-center text-[11px] font-bold uppercase tracking-widest hover:bg-muted transition-colors"
       >
         View →
       </Link>

@@ -46,6 +46,11 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  /* Custom ink theme colors */
+  --color-ink: var(--ink);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-yellow: var(--accent-yellow);
 }
 
 :root {
@@ -81,6 +86,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* Ink theme variables (light) */
+  --ink: #111111;
+  --accent-orange: #fb923c;
+  --accent-blue: #3b82f6;
+  --accent-yellow: #facc15;
 }
 
 .dark {
@@ -117,6 +127,38 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ── Dark theme ──────────────────────────────────────────────────── */
+.theme-dark {
+  /* Ink variables */
+  --ink: #E5E7EB;
+  --accent-orange: #94A3B8;   /* subtle slate — Explore */
+  --accent-blue: #D4A853;     /* matte gold — Email (stands out) */
+  --accent-yellow: #1e293b;   /* dark slate strip, no yellow */
+  /* Text color for accent surfaces */
+  --accent-orange-text: #0B0F19;
+  --accent-blue-text: #0B0F19;
+  --accent-yellow-text: #E5E7EB;
+  /* Shadcn variable overrides */
+  --background: #0B0F19;
+  --foreground: #E5E7EB;
+  --card: #0F172A;
+  --card-foreground: #E5E7EB;
+  --popover: #0F172A;
+  --popover-foreground: #E5E7EB;
+  --primary: #E5E7EB;
+  --primary-foreground: #0B0F19;
+  --secondary: #1e293b;
+  --secondary-foreground: #E5E7EB;
+  --muted: #1e293b;
+  --muted-foreground: #94A3B8;
+  --accent: #1e293b;
+  --accent-foreground: #E5E7EB;
+  --destructive: #ef4444;
+  --border: #334155;
+  --input: #334155;
+  --ring: #475569;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -136,30 +178,45 @@
   }
 
   .ink-border {
-    border: 1px solid #111;
+    border: 1px solid var(--ink);
   }
 
   .ink-border-2 {
-    border: 2px solid #111;
+    border: 2px solid var(--ink);
   }
 
   .ink-shadow {
-    box-shadow: 3px 3px 0 #111;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .ink-card {
+    border: 2px solid var(--ink);
+    background: var(--card);
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: box-shadow 150ms ease, transform 150ms ease, outline-color 150ms ease;
+    outline: 0px solid transparent;
+  }
+
+  .ink-card:hover {
+    box-shadow: 5px 5px 0 var(--ink);
+    transform: translate(-1px, -1px);
+    outline: 2px solid var(--ink);
+    outline-offset: 0px;
   }
 
   .btn-ink {
-    border: 2px solid #111;
-    box-shadow: 3px 3px 0 #111;
+    border: 2px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
     transition: box-shadow 0.15s ease, transform 0.15s ease;
   }
 
   .btn-ink:hover {
-    box-shadow: 1px 1px 0 #111;
+    box-shadow: 1px 1px 0 var(--ink);
     transform: translate(2px, 2px);
   }
 
   .btn-ink:active {
-    box-shadow: 0 0 0 #111;
+    box-shadow: 0 0 0 var(--ink);
     transform: translate(3px, 3px);
   }
 }

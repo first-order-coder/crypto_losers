@@ -59,7 +59,7 @@ export function TableSkeleton({ rows = 10 }: { rows?: number }) {
 
 function CardSkeleton() {
   return (
-    <div className="ink-border-2 ink-shadow rounded-md bg-white p-4 flex flex-col gap-3">
+    <div className="ink-border-2 ink-shadow rounded-md bg-card p-4 flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <Shimmer className="h-4 w-24" />
         <Shimmer className="h-4 w-12 rounded-full" />
@@ -68,11 +68,11 @@ function CardSkeleton() {
         <Shimmer className="h-6 w-28" />
         <Shimmer className="h-4 w-16" />
       </div>
-      <div className="flex items-center justify-between border-t border-zinc-200 pt-3">
+      <div className="flex items-center justify-between border-t border-border pt-3">
         <Shimmer className="h-3 w-16" />
         <Shimmer className="h-3 w-24" />
       </div>
-      <Shimmer className="h-8 w-full border-t border-zinc-200" />
+      <Shimmer className="h-8 w-full border-t border-border" />
     </div>
   );
 }
@@ -93,10 +93,10 @@ function GridSkeleton({ count = 9 }: { count?: number }) {
 
 function StatStripSkeleton() {
   return (
-    <div className="ink-border-2 bg-yellow-200 py-3 px-6 flex items-center justify-center gap-x-8">
-      <Shimmer className="h-4 w-24 !bg-yellow-300" />
-      <Shimmer className="h-4 w-32 !bg-yellow-300" />
-      <Shimmer className="h-4 w-28 !bg-yellow-300" />
+    <div className="ink-border-2 bg-accent-yellow/60 py-3 px-6 flex items-center justify-center gap-x-8">
+      <Shimmer className="h-4 w-24 !bg-accent-yellow" />
+      <Shimmer className="h-4 w-32 !bg-accent-yellow" />
+      <Shimmer className="h-4 w-28 !bg-accent-yellow" />
     </div>
   );
 }

@@ -138,7 +138,10 @@ export default async function AssetPage({ params }: PageProps) {
       </header>
 
       {/* Yellow stat strip */}
-      <div className="ink-border-2 bg-yellow-300 py-2 px-4 mb-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-xs font-bold uppercase tracking-wider text-black rounded-md">
+      <div
+        className="ink-border-2 bg-accent-yellow py-2 px-4 mb-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-xs font-bold uppercase tracking-wider rounded-md"
+        style={{ color: "var(--accent-yellow-text, #000000)" }}
+      >
         <span
           className={`tabular-nums ${isNegative ? "text-red-800" : "text-emerald-800"}`}
         >
@@ -181,7 +184,7 @@ export default async function AssetPage({ params }: PageProps) {
       <AssetTabs binance={binance} background={background} />
 
       {/* Footer disclaimer */}
-      <div className="mt-6 ink-border-2 ink-shadow rounded-md bg-white py-3 px-6">
+      <div className="mt-6 ink-border-2 ink-shadow rounded-md bg-card py-3 px-6">
         <p className="text-xs text-muted-foreground">
           Market data from Binance. Background info from CoinGecko.
           Mapping confidence is determined heuristically — verify independently.

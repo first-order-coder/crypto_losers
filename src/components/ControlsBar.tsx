@@ -48,18 +48,18 @@ export function ControlsBar({
             onClick={() => onViewModeChange("grid")}
             className={`px-3 py-2 text-xs font-bold uppercase tracking-wider transition-colors ${
               viewMode === "grid"
-                ? "bg-black text-white"
-                : "bg-white text-black hover:bg-zinc-100"
+                ? "bg-foreground text-background"
+                : "bg-card text-foreground hover:bg-muted"
             }`}
           >
             Grid
           </button>
           <button
             onClick={() => onViewModeChange("table")}
-            className={`px-3 py-2 text-xs font-bold uppercase tracking-wider border-l border-[#111] transition-colors ${
+            className={`px-3 py-2 text-xs font-bold uppercase tracking-wider border-l border-ink transition-colors ${
               viewMode === "table"
-                ? "bg-black text-white"
-                : "bg-white text-black hover:bg-zinc-100"
+                ? "bg-foreground text-background"
+                : "bg-card text-foreground hover:bg-muted"
             }`}
           >
             Table
@@ -75,8 +75,8 @@ export function ControlsBar({
             onClick={() => onMinVolumeChange(pill.value)}
             className={`ink-border rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider transition-colors ${
               activeMinVolume === pill.value
-                ? "bg-black text-white"
-                : "bg-white text-black hover:bg-zinc-100"
+                ? "bg-foreground text-background"
+                : "bg-card text-foreground hover:bg-muted"
             }`}
           >
             {pill.label}
@@ -88,8 +88,8 @@ export function ControlsBar({
           onClick={() => onExcludeLeveragedChange(!excludeLeveraged)}
           className={`ink-border rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider transition-colors ${
             excludeLeveraged
-              ? "bg-black text-white"
-              : "bg-white text-black hover:bg-zinc-100"
+              ? "bg-foreground text-background"
+              : "bg-card text-foreground hover:bg-muted"
           }`}
         >
           Excl. Leveraged

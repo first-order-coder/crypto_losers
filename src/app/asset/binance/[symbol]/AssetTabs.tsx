@@ -45,8 +45,8 @@ export function AssetTabs({ binance, background }: AssetTabsProps) {
             onClick={() => setActiveTab(tab.id)}
             className={`ink-border rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors ${
               activeTab === tab.id
-                ? "bg-black text-white"
-                : "bg-white text-black hover:bg-zinc-100"
+                ? "bg-foreground text-background"
+                : "bg-card text-foreground hover:bg-muted"
             }`}
           >
             {tab.label}
@@ -56,7 +56,7 @@ export function AssetTabs({ binance, background }: AssetTabsProps) {
 
       {/* Overview panel */}
       {activeTab === "overview" && (
-        <div className="ink-border-2 ink-shadow rounded-md bg-white p-6">
+        <div className="ink-border-2 ink-shadow rounded-md bg-card p-6">
           <h3 className="font-display text-lg uppercase tracking-tight mb-4">
             About
           </h3>
@@ -83,7 +83,7 @@ export function AssetTabs({ binance, background }: AssetTabsProps) {
                     href={background.homepage}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-ink inline-flex items-center gap-1 rounded-md bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wider hover:bg-zinc-50"
+                    className="btn-ink inline-flex items-center gap-1 rounded-md bg-card px-3 py-1.5 text-xs font-bold uppercase tracking-wider hover:bg-muted"
                   >
                     <span aria-hidden>🌐</span> Website
                   </a>
@@ -93,7 +93,7 @@ export function AssetTabs({ binance, background }: AssetTabsProps) {
                     href={background.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-ink inline-flex items-center gap-1 rounded-md bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wider hover:bg-zinc-50"
+                    className="btn-ink inline-flex items-center gap-1 rounded-md bg-card px-3 py-1.5 text-xs font-bold uppercase tracking-wider hover:bg-muted"
                   >
                     <span aria-hidden>𝕏</span> Twitter
                   </a>
@@ -110,7 +110,7 @@ export function AssetTabs({ binance, background }: AssetTabsProps) {
 
       {/* Market panel */}
       {activeTab === "market" && (
-        <div className="ink-border-2 ink-shadow rounded-md bg-white p-6">
+        <div className="ink-border-2 ink-shadow rounded-md bg-card p-6">
           <h3 className="font-display text-lg uppercase tracking-tight mb-4">
             Market Stats
           </h3>
