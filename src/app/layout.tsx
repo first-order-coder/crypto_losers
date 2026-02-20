@@ -34,6 +34,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${bodyFont.variable} ${displayFont.variable} theme-dark`}
+      suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
