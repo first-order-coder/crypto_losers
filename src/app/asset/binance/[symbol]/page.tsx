@@ -89,7 +89,7 @@ export default async function AssetPage({ params }: PageProps) {
   if (!data) return notFound();
 
   return (
-    <PageShell>
+    <PageShell variant="wide">
       <Link
         href="/"
         className="mb-4 inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"

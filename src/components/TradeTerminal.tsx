@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { CandleChart, type CandleChartHandle, type FullCandle } from "@/components/CandleChart";
+import { TradingViewChart } from "@/components/TradingViewChart";
 
 // ── Types ─────────────────────────────────────────────────────────────
 
@@ -246,6 +247,33 @@ interface TradeTerminalProps {
 const TRADES_MAX = 200;
 const WS_BASE = "wss://stream.binance.com:9443";
 
+function intervalToTradingView(iv: BinanceKlineInterval): string {
+  switch (iv) {
+    case "1m":
+      return "1";
+    case "3m":
+      return "3";
+    case "5m":
+      return "5";
+    case "15m":
+      return "15";
+    case "30m":
+      return "30";
+    case "1h":
+      return "60";
+    case "2h":
+      return "120";
+    case "4h":
+      return "240";
+    case "1d":
+      return "D";
+    case "1w":
+      return "W";
+    default:
+      return "60";
+  }
+}
+
 export function TradeTerminal({ symbol }: TradeTerminalProps) {
   const [snap, setSnap] = useState<TradeSnapshot | null>(null);
   const [loadState, setLoadState] = useState<"loading" | "ok" | "error">("loading");
@@ -258,6 +286,7 @@ export function TradeTerminal({ symbol }: TradeTerminalProps) {
   const [orderBook, setOrderBook] = useState<OrderBook>({ bids: [], asks: [] });
   const [trades, setTrades] = useState<TradeEntry[]>([]);
   const [wsStatus, setWsStatus] = useState<"connecting" | "open" | "closed">("closed");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   // livePct is a derived value – no separate state needed
   const livePct =
@@ -274,6 +303,27 @@ export function TradeTerminal({ symbol }: TradeTerminalProps) {
   useEffect(() => {
     intervalRef.current = interval;
   }, [interval]);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const root = document.documentElement;
+    const updateTheme = () => {
+      const isDark = root.classList.contains("theme-dark");
+      setTheme(isDark ? "dark" : "light");
+    };
+
+    updateTheme();
+
+    const observer = new MutationObserver(() => {
+      updateTheme();
+    });
+
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // ── Snapshot fetch ──────────────────────────────────────────────────
 
@@ -458,6 +508,8 @@ export function TradeTerminal({ symbol }: TradeTerminalProps) {
   const isNeg = (livePct ?? 0) < 0;
   const displayPrice = livePrice ?? stats?.lastPrice;
 
+  const tvInterval = intervalToTradingView(interval);
+
   return (
     <div className="ink-border-2 ink-shadow rounded-md overflow-hidden mb-6">
       {/* ── Header strip ───────────────────────────────────────────── */}
@@ -547,11 +599,20 @@ export function TradeTerminal({ symbol }: TradeTerminalProps) {
           {/* Chart */}
           <div className="min-h-[420px] lg:min-h-[520px] xl:min-h-[600px]">
             {snap ? (
-              <CandleChart
-                ref={chartRef}
-                initialCandles={snap.candles}
+              <TradingViewChart
+                key={`${symbol}-${tvInterval}-${theme}`}
+                symbol={symbol}
+                interval={tvInterval}
+                theme={theme}
                 height={520}
-                quoteAsset={snap.quoteAsset}
+                fallback={
+                  <CandleChart
+                    ref={chartRef}
+                    initialCandles={snap.candles}
+                    height={520}
+                    quoteAsset={snap.quoteAsset}
+                  />
+                }
               />
             ) : (
               <div className="flex items-center justify-center text-muted-foreground text-sm h-[320px] lg:h-[520px] xl:h-[600px]">
