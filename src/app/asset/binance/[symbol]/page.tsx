@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 import { PageShell } from "@/components/PageShell";
 import { KpiCard } from "@/components/KpiCard";
 import { TradeTerminal } from "@/components/TradeTerminal";
+import { CoinNews } from "@/components/CoinNews";
 import { formatPrice, formatCompact } from "@/lib/number";
 
 // ── Types ───────────────────────────────────────────────────────────
@@ -148,6 +149,18 @@ export default async function AssetPage({ params }: PageProps) {
           </div>
         </section>
       )}
+
+      {/* News & Announcements (context) */}
+      <CoinNews
+        keywords={[
+          ...new Set(
+            [sym, data.baseAsset, data.coin?.name].filter(
+              (s): s is string => typeof s === "string" && s.length > 0,
+            ),
+          ),
+        ]}
+        limit={10}
+      />
 
       {/* Project info */}
       <section className="mb-6">
